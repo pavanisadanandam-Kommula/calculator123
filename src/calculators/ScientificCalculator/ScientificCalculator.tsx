@@ -5,7 +5,26 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { isNumber } from '../../utils/validators';
 
-const operations = ['sin', 'cos', 'tan', 'sqrt', 'log'] as const;
+const operations = [
+  'sin',
+  'cos',
+  'tan',
+  'csc',
+  'sec',
+  'cot',
+  'sqrt',
+  'cbrt',
+  'square',
+  'cube',
+  'power',
+  'factorial',
+  'pi',
+  'euler',
+  'log',
+  'ln',
+  'abs',
+  'reciprocal'
+] as const;
 
 export const ScientificCalculator = () => {
   const [value, setValue] = useState('');
@@ -14,18 +33,65 @@ export const ScientificCalculator = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const degToRad = (deg: number) => (deg * Math.PI) / 180;
+  const eps = 1e-12;
+
   const evaluate = (valueNumber: number) => {
     switch (operation) {
       case 'sin':
-        return Math.sin(valueNumber);
+        return Math.abs(Math.sin(degToRad(valueNumber))) < 1e-15 ? 0 : Math.sin(degToRad(valueNumber));
       case 'cos':
-        return Math.cos(valueNumber);
-      case 'tan':
-        return Math.tan(valueNumber);
+        return Math.abs(Math.cos(degToRad(valueNumber))) < 1e-15 ? 0 : Math.cos(degToRad(valueNumber));
+      case 'tan': {
+        const cosV = Math.cos(degToRad(valueNumber));
+        if (Math.abs(cosV) < eps) return NaN;
+        return Math.tan(degToRad(valueNumber));
+      }
+      case 'csc': {
+        const sinV = Math.sin(degToRad(valueNumber));
+        if (Math.abs(sinV) < eps) return NaN;
+        return 1 / sinV;
+      }
+      case 'sec': {
+        const cosV = Math.cos(degToRad(valueNumber));
+        if (Math.abs(cosV) < eps) return NaN;
+        return 1 / cosV;
+      }
+      case 'cot': {
+        const sinV = Math.sin(degToRad(valueNumber));
+        if (Math.abs(sinV) < eps) return NaN;
+        return Math.cos(degToRad(valueNumber)) / sinV;
+      }
       case 'sqrt':
         return valueNumber >= 0 ? Math.sqrt(valueNumber) : NaN;
+      case 'cbrt':
+        return Math.cbrt(valueNumber);
+      case 'square':
+        return Math.pow(valueNumber, 2);
+      case 'cube':
+        return Math.pow(valueNumber, 3);
+      case 'power':
+        return Math.pow(valueNumber, 2);
+      case 'factorial':
+        if (!Number.isInteger(valueNumber) || valueNumber < 0) return NaN;
+        if (valueNumber > 170) return NaN; // avoid overflow
+        return (function fac(n: number) {
+          let r = 1;
+          for (let i = 2; i <= n; i += 1) r *= i;
+          return r;
+        })(valueNumber);
+      case 'pi':
+        return Math.PI;
+      case 'euler':
+        return Math.E;
       case 'log':
         return valueNumber > 0 ? Math.log10(valueNumber) : NaN;
+      case 'ln':
+        return valueNumber > 0 ? Math.log(valueNumber) : NaN;
+      case 'abs':
+        return Math.abs(valueNumber);
+      case 'reciprocal':
+        return valueNumber === 0 ? NaN : 1 / valueNumber;
       default:
         return NaN;
     }
@@ -43,11 +109,13 @@ export const ScientificCalculator = () => {
     setLoading(true);
     setTimeout(() => {
       const computed = evaluate(Number(value));
-      if (Number.isNaN(computed)) {
-        setError('The selected operation is not valid for this input.');
+      if (!Number.isFinite(computed) || Number.isNaN(computed)) {
+        setError(!Number.isFinite(computed) ? 'Undefined' : 'The selected operation is not valid for this input.');
         setResult(null);
       } else {
-        setResult(Number(computed.toFixed(6)));
+        // Round to 5 decimal places and remove unnecessary trailing zeros
+        const rounded = parseFloat((Math.round((computed + Number.EPSILON) * 1e5) / 1e5).toFixed(5));
+        setResult(Number(rounded.toString()));
       }
       setLoading(false);
     }, 300);

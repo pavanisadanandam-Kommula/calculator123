@@ -11,27 +11,72 @@ export const calculateBasic = (x: number, y: number, operator: BasicOperator) =>
 };
 
 export const calculateScientific = (value: number, operation: string, exponent = 0) => {
+  const eps = 1e-12;
+  const degToRad = (deg: number) => (deg * Math.PI) / 180;
+
   switch (operation) {
-    case 'sin':
-      return Math.sin(value);
-    case 'cos':
-      return Math.cos(value);
-    case 'tan':
-      return Math.tan(value);
+    case 'sin': {
+      const rad = degToRad(value);
+      let v = Math.sin(rad);
+      if (Math.abs(v) < 1e-15) v = 0;
+      return v;
+    }
+    case 'cos': {
+      const rad = degToRad(value);
+      let v = Math.cos(rad);
+      if (Math.abs(v) < 1e-15) v = 0;
+      return v;
+    }
+    case 'tan': {
+      const rad = degToRad(value);
+      const cosV = Math.cos(rad);
+      if (Math.abs(cosV) < eps) return NaN; // Undefined
+      return Math.tan(rad);
+    }
+    case 'csc': {
+      const rad = degToRad(value);
+      const sinV = Math.sin(rad);
+      if (Math.abs(sinV) < eps) return NaN;
+      return 1 / sinV;
+    }
+    case 'sec': {
+      const rad = degToRad(value);
+      const cosV = Math.cos(rad);
+      if (Math.abs(cosV) < eps) return NaN;
+      return 1 / cosV;
+    }
+    case 'cot': {
+      const rad = degToRad(value);
+      const sinV = Math.sin(rad);
+      if (Math.abs(sinV) < eps) return NaN;
+      return Math.cos(rad) / sinV;
+    }
     case 'log':
       return value > 0 ? Math.log10(value) : NaN;
     case 'ln':
       return value > 0 ? Math.log(value) : NaN;
     case 'sqrt':
       return value >= 0 ? Math.sqrt(value) : NaN;
-    case 'factorial':
-      return factorial(value);
+    case 'cbrt':
+      return Math.cbrt(value);
+    case 'square':
+      return Math.pow(value, 2);
+    case 'cube':
+      return Math.pow(value, 3);
     case 'power':
       return Math.pow(value, exponent);
+    case 'factorial':
+      return factorial(value);
+    case 'reciprocal':
+      return value === 0 ? NaN : 1 / value;
     case 'exp':
       return Math.exp(value);
     case 'pi':
       return Math.PI * (Number.isFinite(value) ? value : 1);
+    case 'euler':
+      return Math.E;
+    case 'abs':
+      return Math.abs(value);
     default:
       return NaN;
   }

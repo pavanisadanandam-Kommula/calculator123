@@ -149,8 +149,8 @@ function formatResult(result) {
   if (result === 'Undefined') {
     return 'Undefined';
   }
-  if (!Number.isFinite(result)) {
-    return 'Overflow';
+  if (!Number.isFinite(result) || Number.isNaN(result)) {
+    return 'Undefined';
   }
 
   const rounded = Number(result.toFixed(10));
