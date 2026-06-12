@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillCraft Pro Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="aurora-container">
+      <div class="blob blob-purple"></div>
+      <div class="blob blob-blue"></div>
+      <div class="blob blob-indigo"></div>
+    </div>
+
+    <main class="calculator-shell">
+      <section class="calculator-card">
+        <header class="calculator-header">
+          <div class="calculator-top">
+            <div class="brand-group">
+              <div class="calculator-brand">
+                <span class="brand-text">SkillCraft Pro</span>
+                <span class="status-indicator" aria-hidden="true"></span>
+              </div>
+              <p class="brand-subtitle">Scientific calculator with history, theme, and keyboard support</p>
+            </div>
+
+            <div class="toolbar-controls">
+              <button id="copyResult" class="icon-button button-copy" type="button" aria-label="Copy result">Copy</button>
+              <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">🌙</button>
+              <div id="clock" class="clock-text" aria-live="polite">--:--</div>
+            </div>
+          </div>
+
+          <div class="calculator-screen">
+            <div id="expression" class="calculator-expression" aria-live="polite"></div>
+            <div id="display" class="calculator-display" aria-live="polite">0</div>
+          </div>
+        </header>
+
+        <div class="scientific-grid">
+          <button class="button button-scientific" data-action="sqrt">√</button>
+          <button class="button button-scientific" data-action="cbrt">∛</button>
+          <button class="button button-scientific" data-action="square">x²</button>
+          <button class="button button-scientific" data-action="cube">x³</button>
+          <button class="button button-scientific" data-action="power">xʸ</button>
+          <button class="button button-scientific" data-action="factorial">!</button>
+          <button class="button button-scientific" data-action="pi">π</button>
+          <button class="button button-scientific" data-action="euler">e</button>
+
+          <button class="button button-scientific" data-action="sin">sin</button>
+          <button class="button button-scientific" data-action="cos">cos</button>
+          <button class="button button-scientific" data-action="tan">tan</button>
+          <button class="button button-scientific" data-action="csc">csc</button>
+          <button class="button button-scientific" data-action="sec">sec</button>
+          <button class="button button-scientific" data-action="cot">cot</button>
+          <button class="button button-scientific" data-action="log">log</button>
+          <button class="button button-scientific" data-action="ln">ln</button>
+          <button class="button button-scientific" data-action="abs">abs</button>
+          <button class="button button-scientific" data-action="reciprocal">1/x</button>
+        </div>
+
+        <div class="calculator-grid">
+          <button class="button button-clear" data-action="clear" aria-label="Clear">C</button>
+          <button class="button button-delete" data-action="delete" aria-label="Delete last character">DEL</button>
+          <button class="button button-operator" data-value="%" aria-label="Modulus">%</button>
+          <button class="button button-operator" data-value="/" aria-label="Divide">÷</button>
+
+          <button class="button button-num" data-value="7">7</button>
+          <button class="button button-num" data-value="8">8</button>
+          <button class="button button-num" data-value="9">9</button>
+          <button class="button button-operator" data-value="*" aria-label="Multiply">×</button>
+
+          <button class="button button-num" data-value="4">4</button>
+          <button class="button button-num" data-value="5">5</button>
+          <button class="button button-num" data-value="6">6</button>
+          <button class="button button-operator" data-value="-" aria-label="Subtract">−</button>
+
+          <button class="button button-num" data-value="1">1</button>
+          <button class="button button-num" data-value="2">2</button>
+          <button class="button button-num" data-value="3">3</button>
+          <button class="button button-operator" data-value="+" aria-label="Add">+</button>
+
+          <button class="button button-num" data-value="0">0</button>
+          <button class="button button-num" data-value=".">.</button>
+          <button class="button button-equals" data-action="equals" aria-label="Equals">=</button>
+        </div>
+      </section>
+
+      <aside class="history-panel">
+        <div class="history-header">
+          <div>
+            <p class="history-label">History</p>
+            <h2 class="history-title">Recent calculations</h2>
+          </div>
+          <button id="clearHistory" class="button button-destructive" type="button">Clear History</button>
+        </div>
+        <ul id="historyList" class="history-list"></ul>
+      </aside>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
